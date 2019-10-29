@@ -1,4 +1,4 @@
-const router = require('express');
+const router = require('express').Router();
 const postsDb = require('../data/db');
 
 module.exports = router;
@@ -10,7 +10,17 @@ router.post('/', (req, res) => {});
 router.post('/:id/comments', (req, res) => {});
 
 //return array of all the post objects contained in the database
-router.get('/', (req, res) => {});
+router.get('/', (req, res) => {
+	postsDb
+		.find()
+		.then((posts) => {
+			res.status(200).json(posts);
+		})
+		.catch((error) => {
+			console.log(error);
+			res.status(500).json({ message: 'Error retrieving the posts' });
+		});
+});
 
 //return the post object with the specified id
 router.get('/:id', (req, res) => {});
