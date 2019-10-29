@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
 		postsDb
 			.insert(req.body)
 			.then((post) => {
-				res.status(201).json(post);
+				res.status(201).json(req.body);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -37,10 +37,22 @@ router.get('/', (req, res) => {
 });
 
 //return the post object with the specified id
-router.get('/:id', (req, res) => {});
+router.get('/:id', (req, res) => {
+	const id = req.params.id;
+	postsDb
+		.findById(id)
+		.then((post) => {
+			res.status(200).json(post);
+		})
+		.catch((error) => {
+			res.status(500).json({ message: 'Error retrieving the post' });
+		});
+});
 
 //return array of all comment objects associated with the post with the specified id
-router.get('/:id/comments', (req, res) => {});
+router.get('/:id/comments', (req, res) => {
+	const id = req.params.id;
+});
 
 //removes the post with the specified id and returns the deleted post object
 router.delete('/:id', (req, res) => {});
