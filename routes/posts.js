@@ -22,27 +22,23 @@ router.post('/', (req, res) => {
 
 //Create a comment for the post with the specified id
 router.post('/:id/comments', (req, res) => {
-	const comment = req.body;
 	const id = req.params.id;
+
+	const comment = {
+		text: req.body.text,
+		post_id: id
+	};
+
 	postsDb
-		.findById(id)
-		.then((post) => {
-			console.log(req.body);
-			console.log(post);
-			postsDb
-				.insertComment(comment)
-				.then((comments) => {
-					res.status(201).json({
-						message: 'Comment added'
-					});
-				})
-				.catch((error) => {
-					console.log(error);
-					res.status(500).json({ message: 'Error posting comment' });
-				});
+		.insertComment(comment)
+		.then((comments) => {
+			res.status(201).json({
+				message: 'Comment added'
+			});
 		})
 		.catch((error) => {
-			res.status(500).json({ message: 'Error retrieving the post' });
+			console.log(error);
+			res.status(500).json({ message: 'Error posting comment' });
 		});
 });
 
