@@ -55,7 +55,19 @@ router.get('/:id/comments', (req, res) => {
 });
 
 //removes the post with the specified id and returns the deleted post object
-router.delete('/:id', (req, res) => {});
+router.delete('/:id', (req, res) => {
+	const id = req.params.id;
+	postsDb
+		.remove(id)
+		.then((post) => {
+			res.status(200).json({
+				message: 'Post deleted'
+			});
+		})
+		.catch((error) => {
+			res.status(500).json({ message: 'Error deleting the post' });
+		});
+});
 
 //Updates the post with the specified id using data from the request body
 router.put('/:id', (req, res) => {});
