@@ -4,7 +4,21 @@ const postsDb = require('../data/db');
 module.exports = router;
 
 //create a post using the information sent inside request body
-router.post('/', (req, res) => {});
+router.post('/', (req, res) => {
+	if (!req.body.title || !req.body.contents) {
+		res.status(400).json({ message: 'Please include a title and contents for the post' });
+	} else {
+		postsDb
+			.insert(req.body)
+			.then((post) => {
+				res.status(201).json(post);
+			})
+			.catch((error) => {
+				console.log(error);
+				res.status(500).json({ message: 'Error adding the post' });
+			});
+	}
+});
 
 //Create a comment for the post with the specified id
 router.post('/:id/comments', (req, res) => {});
